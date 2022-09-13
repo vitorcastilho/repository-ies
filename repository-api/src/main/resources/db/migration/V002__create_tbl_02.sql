@@ -1,0 +1,10 @@
+CREATE TABLE repository.user (
+	id_user BIGSERIAL NOT NULL PRIMARY KEY,
+	name VARCHAR(150) NOT NULL,
+	created_at TIMESTAMPTZ DEFAULT NOW(),
+	last_acess TIMESTAMPTZ,
+	email VARCHAR(150) NOT NULL UNIQUE,
+	registration BIGINT NOT NULL UNIQUE,
+	password VARCHAR(50) NOT NULL,
+	id_user_type BIGSERIAL NOT NULL REFERENCES repository.user_type
+);
