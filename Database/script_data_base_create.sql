@@ -41,8 +41,7 @@ CREATE TABLE repository.user (
 	last_acess TIMESTAMPTZ,
 	email VARCHAR(150) NOT NULL UNIQUE,
 	registration BIGINT NOT NULL UNIQUE,
-	password VARCHAR(50) NOT NULL,
-	id_user_type BIGSERIAL NOT NULL REFERENCES repository.user_type
+	password VARCHAR(50) NOT NULL
 );
 ---------------------------------------------------------
 CREATE TABLE repository.final_paper (
@@ -74,5 +73,10 @@ CREATE TABLE repository.work (
 CREATE TABLE repository.final_paper_has_tag (
 	id_final_paper BIGSERIAL NOT NULL REFERENCES repository.final_paper,
 	id_tag BIGSERIAL NOT NULL REFERENCES repository.tag
+);
+
+CREATE TABLE repository.user_has_user_type (
+	id_user BIGSERIAL NOT NULL REFERENCES repository.user,
+	id_user_type BIGSERIAL NOT NULL REFERENCES repository.user_type
 );
 ---------------------------------------------------------

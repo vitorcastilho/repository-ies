@@ -2,29 +2,46 @@ package com.ies.repository.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import com.ies.repository.enums.RoleName;
+
 @Entity
-@Table(name = "user_type")
-public class UserType {
-	
+@Table(name = "user_type", schema = "repository")
+public class UserType implements GrantedAuthority {
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_user_type")
 	private Long idUserType;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, name = "user_type", unique = true)
+	private RoleName userType;
 	
-	@Column(nullable = false, name = "user_type")
-	private String userType;
-	
-	public UserType() {
-		
+	////////////////////////////////////////////////////////////////
+
+	@Override
+	public String getAuthority() {
+		return this.userType.toString();
 	}
 
-	public UserType(String userType) {
-		super();
+	////////////////////////////////////////////////////////////////
+
+	public UserType() {
+
+	}
+
+	public UserType(RoleName userType) {
 		this.userType = userType;
 	}
 
@@ -36,14 +53,12 @@ public class UserType {
 		this.idUserType = idUserType;
 	}
 
-	public String getUserType() {
+	public RoleName getUserType() {
 		return userType;
 	}
 
-	public void setUserType(String userType) {
+	public void setUserType(RoleName userType) {
 		this.userType = userType;
 	}
-	
-	
 
 }

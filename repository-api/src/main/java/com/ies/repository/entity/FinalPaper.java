@@ -17,7 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "final_paper")
+@Table(name = "final_paper", schema = "repository")
 public class FinalPaper {
 
 	@Id
@@ -56,7 +56,7 @@ public class FinalPaper {
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(nullable = false, name = "id_user")
-	private User user;
+	private UserModel user;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(nullable = false, name = "id_file_path")
@@ -71,7 +71,7 @@ public class FinalPaper {
 	}
 
 	public FinalPaper(String title, String author, int year, int semester, LocalDateTime createdAt,
-			LocalDateTime modifiedIn, Boolean isPublic, Summary summary, Course course, User user, FilePath filePath, List<Tag> tag) {
+			LocalDateTime modifiedIn, Boolean isPublic, Summary summary, Course course, UserModel user, FilePath filePath, List<Tag> tag) {
 		this.title = title;
 		this.author = author;
 		this.year = year;
@@ -166,11 +166,11 @@ public class FinalPaper {
 		this.course = course;
 	}
 
-	public User getUser() {
+	public UserModel getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserModel user) {
 		this.user = user;
 	}
 

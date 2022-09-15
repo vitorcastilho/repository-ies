@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "work")
+@Table(name = "work", schema = "repository")
 public class Work {
 	
 	@Id
@@ -41,7 +41,7 @@ public class Work {
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(nullable = false, name = "id_user")
-	private User user;
+	private UserModel user;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(nullable = false, name = "id_file_path")
@@ -52,7 +52,7 @@ public class Work {
 	}
 
 	public Work(int yearApplication, LocalDateTime createdAt, LocalDateTime modifiedIn, Subject subject, KindOfWork kindOfWork,
-			User user, FilePath filePath) {
+			UserModel user, FilePath filePath) {
 		this.yearApplication = yearApplication;
 		this.createdAt = createdAt;
 		this.modifiedIn = modifiedIn;
@@ -110,11 +110,11 @@ public class Work {
 		this.kindOfWork = kindOfWork;
 	}
 
-	public User getUser() {
+	public UserModel getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserModel user) {
 		this.user = user;
 	}
 

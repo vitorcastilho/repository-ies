@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "file_path")
+@Table(name = "file_path", schema = "repository")
 public class FilePath {
 
 	@Id

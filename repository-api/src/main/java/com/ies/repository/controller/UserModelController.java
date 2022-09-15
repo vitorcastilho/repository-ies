@@ -18,27 +18,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ies.repository.dto.UserDto;
-import com.ies.repository.entity.User;
-import com.ies.repository.service.UserService;
+import com.ies.repository.dto.UserModelDto;
+import com.ies.repository.entity.UserModel;
+import com.ies.repository.service.UserModelService;
 
 @RestController
 @CrossOrigin(origins="*", maxAge=3600)
 @RequestMapping("/user")
-public class UserController {
+public class UserModelController {
 
 	@Autowired
-	private UserService userService;
+	private UserModelService userService;
 	
 	@PostMapping
-	public ResponseEntity<Object> saveNewUser(@RequestBody @Valid UserDto userDto) {
-		var user = new User();
+	public ResponseEntity<Object> saveNewUser(@RequestBody @Valid UserModelDto userDto) {
+		var user = new UserModel();
 		BeanUtils.copyProperties(userDto, user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveNewUser(user));
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<User>> getAllUser() {
+	public ResponseEntity<List<UserModel>> getAllUser() {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.listAllUser());
 	}
 	
@@ -54,8 +54,8 @@ public class UserController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Object> updateUser(@RequestBody @Valid UserDto userDto) {
-		var user = new User();
+	public ResponseEntity<Object> updateUser(@RequestBody @Valid UserModelDto userDto) {
+		var user = new UserModel();
 		BeanUtils.copyProperties(userDto, user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateUser(user));
 	}

@@ -7,34 +7,34 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ies.repository.entity.User;
+import com.ies.repository.entity.UserModel;
 import com.ies.repository.exception.BusinessException;
 import com.ies.repository.exception.EntityNotFoundException;
-import com.ies.repository.repository.UserRepository;
+import com.ies.repository.repository.UserModelRepository;
 
 @Service
-public class UserService {
+public class UserModelService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserModelRepository userRepository;
 	
 	@Transactional
-	public User saveNewUser(User user) {
+	public UserModel saveNewUser(UserModel user) {
 		if (existsByRegistration(user.getRegistration())) {
 			throw new BusinessException("Usuário com número de matrícula " + user.getRegistration() + " já cadastrado.");
 		}
 		return userRepository.save(user);
 	}
 	
-	public List<User> listAllUser() {
-		List<User> userList =userRepository.findAll();
+	public List<UserModel> listAllUser() {
+		List<UserModel> userList =userRepository.findAll();
 		if(userList.isEmpty()) {
 			throw new EntityNotFoundException("Não existe usuário cadastrado.");
 		}
 		return userList;
 	}
 	
-	public User findByIdUser(Long id) {
+	public UserModel findByIdUser(Long id) {
 		return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário não cadastrado."));
 	}
 	
@@ -45,7 +45,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public User updateUser(User user) {
+	public UserModel updateUser(UserModel user) {
 		findByIdUser(user.getIdUser());
 		return userRepository.save(user);
 	}

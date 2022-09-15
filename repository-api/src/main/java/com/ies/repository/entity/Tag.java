@@ -11,7 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tag")
+@Table(name = "tag", schema = "repository")
 public class Tag {
 
 	@Id

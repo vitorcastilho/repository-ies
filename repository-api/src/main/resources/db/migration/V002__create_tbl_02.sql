@@ -5,6 +5,5 @@ CREATE TABLE repository.user (
 	last_acess TIMESTAMPTZ,
 	email VARCHAR(150) NOT NULL UNIQUE,
 	registration BIGINT NOT NULL UNIQUE,
-	password VARCHAR(50) NOT NULL,
-	id_user_type BIGSERIAL NOT NULL REFERENCES repository.user_type
+	password VARCHAR(100) NOT NULL
 );

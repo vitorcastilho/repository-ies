@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ies.repository.entity.UserType;
+import com.ies.repository.enums.RoleName;
 import com.ies.repository.exception.BusinessException;
 import com.ies.repository.exception.EntityNotFoundException;
 import com.ies.repository.repository.UserTypeRepository;
@@ -65,8 +66,8 @@ public class UserTypeService {
 		return userTypeRepository.save(userType);
 	}
 	
-	public boolean existsByUserType(String userType) {
-		return userTypeRepository.existsByUserType(userType);
+	public boolean existsByUserType(RoleName roleName) {
+		return userTypeRepository.existsByUserType(roleName);
 	}
 
 }

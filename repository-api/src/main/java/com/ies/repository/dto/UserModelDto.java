@@ -1,16 +1,22 @@
 package com.ies.repository.dto;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class UserDto {
+import com.ies.repository.enums.RoleName;
+
+public class UserModelDto {
 
 	private Long idUser;
 	
 	@NotBlank
 	@Size(max = 100)
 	private String name;
+	
+	private LocalDateTime lastAcess;
 	
 	@Email
 	private String email;
@@ -22,8 +28,8 @@ public class UserDto {
 	@Size(max = 50)
 	private String password;
 	
-	@NotBlank
-	private Long userType;
+//	@NotBlank
+	private RoleName userType;
 
 	public Long getIdUser() {
 		return idUser;
@@ -39,6 +45,14 @@ public class UserDto {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public LocalDateTime getLastAcess() {
+		return lastAcess;
+	}
+
+	public void setLastAcess(LocalDateTime lastAcess) {
+		this.lastAcess = lastAcess;
 	}
 
 	public String getEmail() {
@@ -65,11 +79,11 @@ public class UserDto {
 		this.password = password;
 	}
 
-	public Long getUserType() {
+	public RoleName getUserType() {
 		return userType;
 	}
 
-	public void setUserType(Long userType) {
+	public void setUserType(RoleName userType) {
 		this.userType = userType;
 	}
 	
