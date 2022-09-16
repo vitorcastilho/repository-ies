@@ -52,6 +52,15 @@ public class FilePathService {
 
 	@Transactional
 	public FilePath updateFilePath(FilePath filePath) {
+		
+		if (existsByFilePath(filePath.getFilePath())) {
+			throw new BusinessException("Caminho do arquivo já está em uso!");
+		}
+		
+		if (findByIdFilePath(filePath.getIdFilePath()) == null) {
+			throw new EntityNotFoundException("Caminho do arquivo não cadastrado.");
+		}
+		
 		findByIdFilePath(filePath.getIdFilePath());
 		return filePathRepository.save(filePath);
 	}

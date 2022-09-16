@@ -59,6 +59,10 @@ public class CourseService {
 	@Transactional
 	public Course updateCourse(Course course) {
 		
+		if (existsByCourse(course.getCourse())) {
+			throw new BusinessException("Curso já cadastrado");
+		}
+		
 		if (findCourseById(course.getIdCourse()) == null) {
 			throw new EntityNotFoundException("Curso não cadastrado.");
 		}

@@ -46,7 +46,15 @@ public class UserModelService {
 	
 	@Transactional
 	public UserModel updateUser(UserModel user) {
-		findByIdUser(user.getIdUser());
+		
+		if (existsByRegistration(user.getRegistration())) {
+			throw new BusinessException("Usuário com número de matrícula " + user.getRegistration() + " já cadastrado.");
+		}
+		
+		if(findByIdUser(user.getIdUser()) == null) {
+			throw new EntityNotFoundException("Usuário não cadastrado.");
+		}
+		
 		return userRepository.save(user);
 	}
 	

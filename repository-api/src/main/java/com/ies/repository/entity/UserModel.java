@@ -60,6 +60,12 @@ public class UserModel  implements UserDetails {
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		System.out.println("/////////////////////////////////////////////////");
+		for (UserType userType : userType) {
+			System.out.println(userType.getUserType());
+		}
+		System.out.println("/////////////////////////////////////////////////");
+
 		return this.userType;
 	}
 

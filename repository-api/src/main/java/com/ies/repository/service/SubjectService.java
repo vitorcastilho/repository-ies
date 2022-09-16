@@ -24,6 +24,7 @@ public class SubjectService {
 		if (existsBySubjectCode(subject.getSubjectCode())) {
 			throw new BusinessException("Código de matéria já cadastrado!");
 		}
+		
 		return subjectRepository.save(subject);
 	}
 	
@@ -57,9 +58,14 @@ public class SubjectService {
 	@Transactional
 	public Subject updateSubject(Subject subject) {
 		
+		if (existsBySubjectCode(subject.getSubjectCode())) {
+			throw new BusinessException("Código de matéria já cadastrado!");
+		}
+		
 		if (findByIdSubject(subject.getIdSubject()) == null) {
 			throw new EntityNotFoundException("Matéria não cadastrada");
 		}
+		
 		return subjectRepository.save(subject);
 	}
 	

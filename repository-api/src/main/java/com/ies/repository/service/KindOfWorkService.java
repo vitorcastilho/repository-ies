@@ -47,7 +47,15 @@ public class KindOfWorkService {
 	
 	@Transactional
 	public KindOfWork updateKindOfWork(KindOfWork kindOfWork ) {
-		findByIdKindOfWork(kindOfWork.getIdKindOfWork());
+		
+		if (existsByKindOfWork(kindOfWork.getKindOfWork())) {
+			throw new BusinessException("Tipo de trabalho já cadastrado.");
+		}
+		
+		if (findByIdKindOfWork(kindOfWork.getIdKindOfWork()) == null) {
+			throw new EntityNotFoundException("Tipo de trabalho não cadastrado.");
+		}
+		
 		return kindOfWorkRepository.save(kindOfWork);
 	}
 	

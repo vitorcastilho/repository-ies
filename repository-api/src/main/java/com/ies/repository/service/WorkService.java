@@ -46,7 +46,15 @@ public class WorkService {
 	
 	@Transactional
 	public Work updateWork(Work work) {
-		findWorkById(work.getIdWork());
+		
+		if (existsWork(work)) {
+			throw new BusinessException("Trabalho já cadastrado.");
+		}
+		
+		if(findWorkById(work.getIdWork()) == null) {
+			throw new EntityNotFoundException("Trabalho não cadastrado.");
+		}
+		
 		return workRepository.save(work);
 	}
 	

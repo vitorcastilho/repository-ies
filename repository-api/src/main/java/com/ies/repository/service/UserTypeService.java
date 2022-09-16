@@ -59,6 +59,10 @@ public class UserTypeService {
 	@Transactional
 	public UserType updateUserType(UserType userType) {
 		
+		if ( existsByUserType(userType.getUserType())) {
+			throw new BusinessException("Tipo de usuário já cadastrado!");
+		}
+		
 		if (findByIdUserType(userType.getIdUserType()) == null) {
 			throw new EntityNotFoundException("Tipo de usuário não cadastrado.");
 		}

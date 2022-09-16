@@ -36,7 +36,15 @@ public class TagService {
 	
 	@Transactional
 	public Tag updateTag(Tag tag) {
-		findByIdTag(tag.getIdTag());
+		
+		if(existsByTag(tag.getTag())) {
+			throw new BusinessException("Tag já cadastrada.");
+		}
+		
+		if(findByIdTag(tag.getIdTag()) == null) {
+			throw new EntityNotFoundException("Tag não cadastrada.");
+		}
+		
 		return tagRepository.save(tag);
 	}
 	
