@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,11 +33,13 @@ public class FileController {
 	@Autowired
 	private SaveOnDisk saveOnDisk;
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PostMapping("/upload2")
 	public Path upload(@RequestParam MultipartFile file) {
 		return saveOnDisk.saveWork(file);
 	}
-
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PostMapping("/upload-file")
 	public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile,
 			@RequestParam String author) throws IOException {
@@ -54,6 +57,7 @@ public class FileController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
 	@GetMapping("/download-file/{author}/{fileCode}")
 	public ResponseEntity<?> downloadFile(@PathVariable("fileCode") String fileCode, @PathVariable String author) {
 		FileDownloadUtil downloadUtil = new FileDownloadUtil();

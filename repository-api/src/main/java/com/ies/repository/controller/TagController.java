@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ public class TagController {
 	@Autowired
 	private TagService tagService;
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewTag(@RequestBody @Valid TagDto tagDto) {
 		var tag = new Tag();
@@ -35,17 +37,20 @@ public class TagController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(tagService.saveNewTag(tag));
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdTag(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(tagService.findByIdTag(id));
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteTag(@PathVariable Long id) {
 		tagService.deleteByIdTag(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Tag excluída com sucesso.");
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PutMapping
 	public ResponseEntity<Object> updateTag(@RequestBody @Valid TagDto tagDto) {
 		var tag = new Tag();

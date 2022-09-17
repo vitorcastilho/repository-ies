@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class SummaryController {
 	@Autowired
 	private SummaryService summaryService;
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewSummary(@RequestBody @Valid SummaryDto summaryDto) {
 		var summary = new Summary();
@@ -34,11 +36,13 @@ public class SummaryController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(summaryService.saveNewSummary(summary));
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdSummary(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(summaryService.findSummaryById(id));
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PutMapping
 	public ResponseEntity<Object> updateSummary(@RequestBody @Valid SummaryDto summaryDto) {
 		var summary = new Summary();

@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class CourseController {
 	@Autowired
 	private CourseService courseService;
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewCourse(@RequestBody @Valid CourseDto courseDto) {
 		var course = new Course();
@@ -37,22 +39,26 @@ public class CourseController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(courseService.saveNewCourse(course));
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
 	@GetMapping
 	public ResponseEntity<List<Course>> getAllCourse() {
 		return ResponseEntity.status(HttpStatus.OK).body(courseService.listAllCourse());
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getCourseById(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(courseService.findCourseById(id));
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteWorkById(@PathVariable Long id) {
 		courseService.deleteByIdCourse(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Curso excluído com sucesso.");
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PutMapping
 	public ResponseEntity<Object> updateCourse(@RequestBody @Valid CourseDto courseDto){
 		var course = new Course();

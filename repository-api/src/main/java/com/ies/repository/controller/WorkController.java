@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class WorkController {
 	@Autowired
 	private WorkService workService;
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PostMapping
 	ResponseEntity<Object> saveNewWork(@RequestBody @Valid WorkDto workDto) {
 		var work = new Work();
@@ -37,22 +39,26 @@ public class WorkController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(workService.saveNewWork(work));
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
 	@GetMapping
 	public ResponseEntity<List<Work>> getAllWork() {
 		return ResponseEntity.status(HttpStatus.OK).body(workService.listAllWork());
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getWorkById(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(workService.findWorkById(id));
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteWorkById(@PathVariable Long id) {
 		workService.deleteByIdWork(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Trabalho excluído com sucesso.");
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PutMapping
 	public ResponseEntity<Object> updateWork(@RequestBody @Valid WorkDto workDto) {
 		var work = new Work();

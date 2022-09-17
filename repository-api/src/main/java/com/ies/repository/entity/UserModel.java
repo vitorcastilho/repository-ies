@@ -3,6 +3,7 @@ package com.ies.repository.entity;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,12 +61,6 @@ public class UserModel  implements UserDetails {
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		System.out.println("/////////////////////////////////////////////////");
-		for (UserType userType : userType) {
-			System.out.println(userType.getUserType());
-		}
-		System.out.println("/////////////////////////////////////////////////");
-
 		return this.userType;
 	}
 
@@ -174,5 +169,27 @@ public class UserModel  implements UserDetails {
 	public void setUserType(List<UserType> userType) {
 		this.userType = userType;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(createdAt, email, idUser, lastAcess, name, password, registration, userType);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserModel other = (UserModel) obj;
+		return Objects.equals(createdAt, other.createdAt) && Objects.equals(email, other.email)
+				&& Objects.equals(idUser, other.idUser) && Objects.equals(lastAcess, other.lastAcess)
+				&& Objects.equals(name, other.name) && Objects.equals(password, other.password)
+				&& Objects.equals(registration, other.registration) && Objects.equals(userType, other.userType);
+	}
+	
+	
 
 }

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class UserTypeController {
 		this.userTypeService = userTypeService;
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewUserType(@RequestBody @Valid UserTypeDto userTypeDto) {
 		var userType = new UserType();
@@ -39,22 +41,26 @@ public class UserTypeController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userTypeService.saveUserType(userType));
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
 	@GetMapping
 	public ResponseEntity<List<UserType>> getAllUserType() {
 		return ResponseEntity.status(HttpStatus.OK).body(userTypeService.listAllUserType());
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdUserType(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(userTypeService.findByIdUserType(id));
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteUserTypeById(@PathVariable Long id) {
 		userTypeService.deleteByIdUserType(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Tipo de Usuário excluído com sucesso.");
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PutMapping
 	public ResponseEntity<Object> updateUserType(@RequestBody @Valid UserTypeDto userTypeDto) {
 		var userType = new UserType();
