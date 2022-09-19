@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.ies.repository.entity.UserModel;
-import com.ies.repository.exception.EntityNotFoundException;
 import com.ies.repository.repository.UserModelRepository;
 
 @Service
@@ -29,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		Long registration = Long.parseLong(userName);
 		
 		UserModel userModel = userRepository.findByRegistration(registration)
-				.orElseThrow(() -> new EntityNotFoundException("Usuário não cadastrado!"));
+				.orElseThrow(() -> new UsernameNotFoundException("Usuário não cadastrado!"));
 		System.out.println("userModel: " + userModel);
 		return new User(userModel.getRegistration().toString(), userModel.getPassword(), true, true, true, true, userModel.getAuthorities());
 	}

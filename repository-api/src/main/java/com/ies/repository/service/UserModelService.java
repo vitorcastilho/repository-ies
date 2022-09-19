@@ -4,9 +4,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ies.repository.dto.UserModelDto;
 import com.ies.repository.entity.UserModel;
 import com.ies.repository.exception.BusinessException;
 import com.ies.repository.exception.EntityNotFoundException;
@@ -19,11 +22,17 @@ public class UserModelService {
 	private UserModelRepository userRepository;
 	
 	@Transactional
-	public UserModel saveNewUser(UserModel user) {
-		if (existsByRegistration(user.getRegistration())) {
-			throw new BusinessException("Usuário com número de matrícula " + user.getRegistration() + " já cadastrado.");
+	public UserModel saveNewUser(UserModelDto userModelDto) {
+		
+		userModelDto.setPassword(new BCryptPasswordEncoder().encode(userModelDto.getPassword()));
+		
+		var userModel = new UserModel();
+		BeanUtils.copyProperties(userModelDto, userModel);
+		
+		if (existsByRegistration(userModel.getRegistration())) {
+			throw new BusinessException("Usuário com número de matrícula " + userModel.getRegistration() + " já cadastrado.");
 		}
-		return userRepository.save(user);
+		return userRepository.save(userModel);
 	}
 	
 	public List<UserModel> listAllUser() {

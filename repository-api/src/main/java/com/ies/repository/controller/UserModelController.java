@@ -33,10 +33,8 @@ public class UserModelController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
 	@PostMapping
-	public ResponseEntity<Object> saveNewUser(@RequestBody @Valid UserModelDto userDto) {
-		var user = new UserModel();
-		BeanUtils.copyProperties(userDto, user);
-		return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveNewUser(user));
+	public ResponseEntity<Object> saveNewUser(@RequestBody @Valid UserModelDto userDto) {		
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveNewUser(userDto));
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
