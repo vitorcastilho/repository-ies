@@ -4,10 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-!**/src/main/resources/certs/private.pem
-
-public.pem
-*.pem
 
 ### STS ###
 .apt_generated
@@ -36,3 +32,5 @@ build/
 
 ### VS Code ###
 .vscode/
+repository-api/src/main/resources/certs/private.pem
+repository-api/src/main/resources/certs/public.pem
