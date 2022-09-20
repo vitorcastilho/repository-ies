@@ -31,7 +31,7 @@ public class FinalPaperController {
 	@Autowired
 	private FinalPaperService finalPaperService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewFinalPaper(@RequestBody @Valid FinalPaperDto finalPaperDto){
 		var finalPaper = new FinalPaper();
@@ -39,26 +39,26 @@ public class FinalPaperController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(finalPaperService.saveNewFinalPaper(finalPaper));
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<FinalPaper>> getAllFinalPaper() {
 		return ResponseEntity.status(HttpStatus.OK).body(finalPaperService.listAllFinalPaper());
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<FinalPaper> getFinalPaperById(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(finalPaperService.findByIdFinalPaper(id));
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteByIdFinalPaper(@PathVariable Long id) {
 		finalPaperService.deleteByIdFinalPaper(id);
 		return ResponseEntity.status(HttpStatus.OK).body("TCC excluído com sucesso.");
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateFinalPaper(@RequestBody @Valid FinalPaperDto finalPaperDto) {
 		var finalPaper = new FinalPaper();

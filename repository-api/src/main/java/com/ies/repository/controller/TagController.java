@@ -29,7 +29,7 @@ public class TagController {
 	@Autowired
 	private TagService tagService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewTag(@RequestBody @Valid TagDto tagDto) {
 		var tag = new Tag();
@@ -37,20 +37,20 @@ public class TagController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(tagService.saveNewTag(tag));
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdTag(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(tagService.findByIdTag(id));
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteTag(@PathVariable Long id) {
 		tagService.deleteByIdTag(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Tag excluída com sucesso.");
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateTag(@RequestBody @Valid TagDto tagDto) {
 		var tag = new Tag();

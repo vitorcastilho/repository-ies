@@ -33,7 +33,7 @@ public class FilePathController {
 		this.filePathService = filePathService;
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewFilePath(@RequestBody @Valid FilePathDto filePathDto) {
 		var filePath = new FilePath();
@@ -41,26 +41,26 @@ public class FilePathController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(filePathService.saveNewFilePath(filePath));
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<FilePath>> getAllFilePath() {
 		return ResponseEntity.status(HttpStatus.OK).body(filePathService.listAllFilePath());
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdFilePath(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(filePathService.findByIdFilePath(id));
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteByIdFilePath(@PathVariable Long id) {
 		filePathService.deleteByIdFilePath(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Caminho do arquivo excluído com sucesso.");
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateFilePath(@RequestBody @Valid FilePathDto filePathDto) {
 		var filePath = new FilePath();

@@ -31,7 +31,7 @@ public class KindOfWorkController {
 	@Autowired
 	private KindOfWorkService kindOfWorkService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewKindOfWork(@RequestBody @Valid KindOfWorkDto kindOfWorkDto) {
 		var kindOfWork = new KindOfWork();
@@ -39,22 +39,26 @@ public class KindOfWorkController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(kindOfWorkService.saveNewKindOfWork(kindOfWork));
 	}
 	
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<KindOfWork>> getAllKindOfWork() {
 		return ResponseEntity.status(HttpStatus.OK).body(kindOfWorkService.listAllKindOfWork());
 	}
 	
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdKindOfWork(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(kindOfWorkService.findByIdKindOfWork(id));
 	}
 	
+	@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> saveNewKindOfWork(@PathVariable Long id) {
 		kindOfWorkService.deleteByIdKindOfWork(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Tipo de trabalho excluído com sucesso");
 	}
 	
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateKindOfWork(@RequestBody @Valid KindOfWorkDto kindOfWorkDto) {
 		var kindOfWork = new KindOfWork();

@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		
 		UserModel userModel = userRepository.findByRegistration(registration)
 				.orElseThrow(() -> new UsernameNotFoundException("Usuário não cadastrado!"));
-		System.out.println("userModel: " + userModel);
+		
 		return new User(userModel.getRegistration().toString(), userModel.getPassword(), true, true, true, true, userModel.getAuthorities());
 	}
 

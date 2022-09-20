@@ -33,13 +33,13 @@ public class FileController {
 	@Autowired
 	private SaveOnDisk saveOnDisk;
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping("/upload2")
 	public Path upload(@RequestParam MultipartFile file) {
 		return saveOnDisk.saveWork(file);
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping("/upload-file")
 	public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile,
 			@RequestParam String author) throws IOException {
@@ -57,7 +57,7 @@ public class FileController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/download-file/{author}/{fileCode}")
 	public ResponseEntity<?> downloadFile(@PathVariable("fileCode") String fileCode, @PathVariable String author) {
 		FileDownloadUtil downloadUtil = new FileDownloadUtil();

@@ -28,7 +28,7 @@ public class SummaryController {
 	@Autowired
 	private SummaryService summaryService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewSummary(@RequestBody @Valid SummaryDto summaryDto) {
 		var summary = new Summary();
@@ -36,13 +36,13 @@ public class SummaryController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(summaryService.saveNewSummary(summary));
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdSummary(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(summaryService.findSummaryById(id));
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateSummary(@RequestBody @Valid SummaryDto summaryDto) {
 		var summary = new Summary();

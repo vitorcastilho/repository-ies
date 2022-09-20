@@ -31,31 +31,31 @@ public class UserModelController {
 	@Autowired
 	private UserModelService userService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewUser(@RequestBody @Valid UserModelDto userDto) {		
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveNewUser(userDto));
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<UserModel>> getAllUser() {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.listAllUser());
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdUser(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.findByIdUser(id));
 	}
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteByIdUser(@PathVariable Long id) {
 		userService.deleteByIdUser(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Usuário excluído com sucesso.");
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateUser(@RequestBody @Valid UserModelDto userDto) {
 		var user = new UserModel();

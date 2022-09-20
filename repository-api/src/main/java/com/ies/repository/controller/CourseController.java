@@ -31,7 +31,7 @@ public class CourseController {
 	@Autowired
 	private CourseService courseService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewCourse(@RequestBody @Valid CourseDto courseDto) {
 		var course = new Course();
@@ -39,26 +39,26 @@ public class CourseController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(courseService.saveNewCourse(course));
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<Course>> getAllCourse() {
 		return ResponseEntity.status(HttpStatus.OK).body(courseService.listAllCourse());
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getCourseById(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(courseService.findCourseById(id));
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteWorkById(@PathVariable Long id) {
 		courseService.deleteByIdCourse(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Curso excluído com sucesso.");
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateCourse(@RequestBody @Valid CourseDto courseDto){
 		var course = new Course();

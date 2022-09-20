@@ -31,7 +31,7 @@ public class SubjectController {
 	@Autowired
 	private SubjectService subjectService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewSubject(@RequestBody @Valid SubjectDto subjectDto) {
 		var subject = new Subject();
@@ -39,26 +39,26 @@ public class SubjectController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(subjectService.saveNewSubject(subject));
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<Subject>> getAllSubject() {
 		return ResponseEntity.status(HttpStatus.OK).body(subjectService.listAllSubject());
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdSubject(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(subjectService.findByIdSubject(id));
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteByIdSubject(@PathVariable Long id) {
 		subjectService.deleteByIdSubject(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Matéria excluída com sucesso.");
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateSubject(@RequestBody @Valid SubjectDto subjectDto) {
 		var subject = new Subject();

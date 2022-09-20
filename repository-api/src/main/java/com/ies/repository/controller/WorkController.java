@@ -31,7 +31,7 @@ public class WorkController {
 	@Autowired
 	private WorkService workService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	ResponseEntity<Object> saveNewWork(@RequestBody @Valid WorkDto workDto) {
 		var work = new Work();
@@ -39,26 +39,26 @@ public class WorkController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(workService.saveNewWork(work));
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<Work>> getAllWork() {
 		return ResponseEntity.status(HttpStatus.OK).body(workService.listAllWork());
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getWorkById(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(workService.findWorkById(id));
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteWorkById(@PathVariable Long id) {
 		workService.deleteByIdWork(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Trabalho excluído com sucesso.");
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateWork(@RequestBody @Valid WorkDto workDto) {
 		var work = new Work();

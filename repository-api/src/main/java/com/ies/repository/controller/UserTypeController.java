@@ -33,7 +33,7 @@ public class UserTypeController {
 		this.userTypeService = userTypeService;
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<Object> saveNewUserType(@RequestBody @Valid UserTypeDto userTypeDto) {
 		var userType = new UserType();
@@ -41,26 +41,26 @@ public class UserTypeController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userTypeService.saveUserType(userType));
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<UserType>> getAllUserType() {
 		return ResponseEntity.status(HttpStatus.OK).body(userTypeService.listAllUserType());
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_ALUNO', 'SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getByIdUserType(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(userTypeService.findByIdUserType(id));
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteUserTypeById(@PathVariable Long id) {
 		userTypeService.deleteByIdUserType(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Tipo de Usuário excluído com sucesso.");
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROFESSOR')")
+	@PreAuthorize("hasAnyAuthority('SCOPE_PROFESSOR', 'SCOPE_ADMIN')")
 	@PutMapping
 	public ResponseEntity<Object> updateUserType(@RequestBody @Valid UserTypeDto userTypeDto) {
 		var userType = new UserType();

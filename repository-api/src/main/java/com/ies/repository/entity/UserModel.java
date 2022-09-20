@@ -46,10 +46,6 @@ public class UserModel  implements UserDetails {
 
 	@Column(nullable = false, name = "password")
 	private String password;
-
-//	@ManyToOne(cascade = CascadeType.ALL)
-//	@JoinColumn(nullable = false, name = "id_user_type")
-//	private UserType userType;
 	
 	@ManyToMany
 	@JoinTable(name = "user_has_user_type",
@@ -61,6 +57,11 @@ public class UserModel  implements UserDetails {
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		System.out.println("/////////////////////////////////////////////////");
+		for (UserType userType : userType) {
+			System.out.println(userType.getUserType());
+		}
+		System.out.println("/////////////////////////////////////////////////");
 		return this.userType;
 	}
 
