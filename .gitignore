@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 public.pem
 private.pem
+*.pem
 
 ### STS ###
 .apt_generated
