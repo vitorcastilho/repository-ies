@@ -4,10 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-!**/src/main/resources/certs/
+!**/src/main/resources/certs/private.pem
 
 public.pem
-private.pem
 *.pem
 
 ### STS ###
