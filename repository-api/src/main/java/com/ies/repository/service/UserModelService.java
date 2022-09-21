@@ -47,6 +47,10 @@ public class UserModelService {
 		return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário não cadastrado."));
 	}
 	
+	public UserModel findByRegistration(Long id) {
+		return userRepository.findByRegistration(id).orElseThrow(() -> new EntityNotFoundException("Usuário não cadastrado."));
+	}
+	
 	@Transactional
 	public void deleteByIdUser(Long id) {
 		findByIdUser(id);
